@@ -5,7 +5,8 @@ public class RBS {
         int target = 0;
 
         //System.out.println(findPivot(arr));
-        System.out.println(search(arr,target));
+       System.out.println(search(arr,target));
+       // System.out.println(findPivotWithDuplicates(arr));
     }
 
     //for searching the element in the array
@@ -49,7 +50,7 @@ public class RBS {
         return -1;
     }
 
-    //finding pivot
+    //finding pivot for the non duplicates
     static int findPivot(int arr[]){
         int start = 0;
         int end = arr.length - 1;
@@ -82,6 +83,53 @@ public class RBS {
                 //start = mid + 1 because all other elements before mid are less than mid, the array is sorted
                 //from start to mid
                 start = mid + 1;
+            }
+        }
+
+        return -1;
+    }
+
+    static int findPivotWithDuplicates(int arr[]){
+        int start = 0;
+        int end = arr.length - 1;
+
+        while(start <= end){
+            int mid = start + (end - start) / 2;
+
+            //case i
+            //mid < end to prevent the index outofbound error
+            //to prevent mid+1 to become arr.length+1
+            if(mid < end && arr[mid] > arr[mid+1]){
+                return mid;
+            }
+            //case ii
+            //mid > start because to prevent mid - 1 to become -1 if mid is 0
+            if(mid > start && arr[mid] < arr[mid-1]){
+                return mid-1;
+            }
+
+            //if elements at the middle, start, end are equal then just skip the duplicates
+            if(arr[mid] == arr[start] && arr[mid] == arr[end]){
+                //skip the duplicates
+                //Note: if these elements at the start or end may be pivot ?
+                //check if the start is pivot
+                if(arr[start] > arr[start+1]){
+                    return start;
+                }
+                start++;
+
+                //check if the end is pivot
+                if(arr[end] < arr[end-1]){
+                    return end-1;
+                }
+                end--;
+            }
+            // if left side is sorted, so pivot should be right
+            else if(arr[start] < arr[mid] || (arr[start] == arr[mid] && arr[mid] > arr[end])){
+                start = mid + 1;
+            }
+            else{
+                end = mid - 1;
             }
         }
 
